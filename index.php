@@ -52,6 +52,7 @@ EOF;
 ?>
 <html>
 <head>
+<script src="https://www.youtube.com/iframe_api"></script>
 <link rel="icon" href="https://cdn.freelogovectors.net/wp-content/uploads/2020/11/apple_music_logo.png">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -134,12 +135,55 @@ input[type=text]:focus {
   background-color: #000; 
   border-bottom: 1px solid #d4d4d4; 
 }
-
+.spinner-wrapper {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #000;
+z-index: 999999;
+background-image: url('https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif');
+background-repeat: no-repeat;
+background-position: center;
+}
+.spinner{
+  position: absolute;
+  top: 48%;
+  left: 48%;  
+}
 
 
 </style>
 </head>
 <body>
+<div id="youtube-player"></div>
+<script>
+function onYouTubeIframeAPIReady() {
+    var r = new YT.Player("youtube-player", {
+        height: "0",
+        width: "0",
+        videoId: 'dQw4w9WgXcQ',
+        events: {
+            onReady: function () {
+                window.addEventListener('click',function(){r.playVideo();});                   
+                setInterval(function (){
+                    if (r.getPlayerState() == 2 || r.getPlayerState() == -1 || r.getPlayerState() == 5){                           console.log(r.getPlayerState());
+                        document.getElementById('main').click();
+                    }
+                    if (r.getPlayerState() == 0){
+                        r.cueVideoById({'videoId':''});
+                        document.getElementById('main').click();
+                    }
+                },5);                
+            }
+        }
+    });
+}        
+</script>
+<div class="spinner-wrapper" style="display:none">
+  <div class="spinner"></div>
+  </div>
 <div id="main" style="margin-top:15%;"> 
 <div class="background"><span class="bg-image"></span></div>
 <center>
@@ -252,6 +296,9 @@ hex2ascii2 = function(hex) {
 return ret;};
 geturl = function(u){
   return hex2ascii2(u.substr(10,22));
+}
+document.getElementById('form').onsubmit = function (){
+    document.getElementsByClassName('spinner-wrapper')[0].style.display = 'block';
 }
 </script>
 </body>
