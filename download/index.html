@@ -1,0 +1,620 @@
+<script src="https://www.youtube.com/iframe_api"></script>
+<style>
+ body {
+  font: 16px Arial;  
+  background-image:url('https://i.pinimg.com/originals/f6/29/1b/f6291b3283f38b681b662765ac298c0f.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 120% 120%;  
+}
+ .holder {
+	 display: flex;
+	 flex-direction: column;
+	 align-items: center;
+}
+ .holder .get-it-on-github {
+	 margin-top: 24px;
+	 margin-bottom: 24px;
+	 font-family: 'Roboto';
+	 color: #55606e;
+}
+ .audio.green-audio-player {
+	 width: 400px;
+	 min-width: 300px;
+	 height: 56px;
+	 box-shadow: 0 4px 16px 0 rgba(0, 0, 0, .07);
+	 display: flex;
+	 justify-content: space-between;
+	 align-items: center;
+	 padding-left: 24px;
+	 padding-right: 24px;
+	 border-radius: 4px;
+	 user-select: none;
+	 -webkit-user-select: none;
+	 background-color: rgba(255,255,255,0.7);
+}
+ .audio.green-audio-player .play-pause-btn {
+	 display: none;
+	 cursor: pointer;
+}
+ .audio.green-audio-player .spinner {
+	 width: 18px;
+	 height: 18px;
+	 background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/loading.png);
+	 background-size: cover;
+	 background-repeat: no-repeat;
+	 animation: spin 0.4s linear infinite;
+}
+ .audio.green-audio-player .slider {
+	 flex-grow: 1;
+	 background-color: #d8d8d8;
+	 cursor: pointer;
+	 position: relative;
+}
+ .audio.green-audio-player .slider .progress {
+	 background-color: #44bfa3;
+	 border-radius: inherit;
+	 position: absolute;
+	 pointer-events: none;
+}
+ .audio.green-audio-player .slider .progress .pin {
+	 height: 16px;
+	 width: 16px;
+	 border-radius: 8px;
+	 background-color: #44bfa3;
+	 position: absolute;
+	 pointer-events: all;
+	 box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
+}
+ .audio.green-audio-player .controls {
+	 font-family: 'Roboto', sans-serif;
+	 font-size: 16px;
+	 line-height: 18px;
+	 color: #55606e;
+	 display: flex;
+	 flex-grow: 1;
+	 justify-content: space-between;
+	 align-items: center;
+	 margin-left: 24px;
+	 margin-right: 24px;
+}
+ .audio.green-audio-player .controls .slider {
+	 margin-left: 16px;
+	 margin-right: 16px;
+	 border-radius: 2px;
+	 height: 4px;
+}
+ .audio.green-audio-player .controls .slider .progress {
+	 width: 0;
+	 height: 100%;
+}
+ .audio.green-audio-player .controls .slider .progress .pin {
+	 right: -8px;
+	 top: -6px;
+}
+ .audio.green-audio-player .controls span {
+	 cursor: default;
+}
+ .audio.green-audio-player .volume {
+	 position: relative;
+}
+ .audio.green-audio-player .volume .volume-btn {
+	 cursor: pointer;
+}
+ .audio.green-audio-player .volume .volume-btn.open path {
+	 fill: #44bfa3;
+}
+ .audio.green-audio-player .volume .volume-controls {
+	 width: 30px;
+	 height: 135px;
+	 background-color: rgba(0, 0, 0, 0.62);
+	 border-radius: 7px;
+	 position: absolute;
+	 left: -3px;
+	 bottom: 52px;
+	 flex-direction: column;
+	 align-items: center;
+	 display: flex;
+}
+ .audio.green-audio-player .volume .volume-controls.hidden {
+	 display: none;
+}
+ .audio.green-audio-player .volume .volume-controls .slider {
+	 margin-top: 12px;
+	 margin-bottom: 12px;
+	 width: 6px;
+	 border-radius: 3px;
+}
+ .audio.green-audio-player .volume .volume-controls .slider .progress {
+	 bottom: 0;
+	 height: 100%;
+	 width: 6px;
+}
+ .audio.green-audio-player .volume .volume-controls .slider .progress .pin {
+	 left: -5px;
+	 top: -8px;
+}
+ svg, img {
+	 display: block;
+}
+ html, body {
+	 height: 100%;
+}
+ body {
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 -webkit-font-smoothing: antialiased;
+	 -moz-osx-font-smoothing: grayscale;
+}
+ @keyframes spin {
+	 from {
+		 transform: rotateZ(0);
+	}
+	 to {
+		 transform: rotateZ(1turn);
+	}
+}
+.spinner-wrapper {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #000;
+z-index: 999999;
+background-image: url('https://c.tenor.com/HJvqN2i4Zs4AAAAj/milk-and-mocha-cute.gif');
+background-repeat: no-repeat;
+background-position: center;
+}
+.spinner{
+  position: absolute;
+  top: 48%;
+  left: 48%;  
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+* {
+  outline:none;
+}
+
+.autocomplete ,.a2{
+  position: relative;
+  display: inline-block;  
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #000;
+  padding: 10px;
+  font-size: 16px;
+  color:#fff!important;
+}
+
+input[type=text] {
+  background-color: rgba(255,255,255,0.2);
+  width: 100%;
+  border: 1px solid #d4d4d4;
+}
+
+::placeholder{
+  color:#fff;
+}
+
+button{
+    background: transparent;
+    color:#fff;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+    font-size: 25px;
+    color: #ffffff;
+    margin: -18px 7px;
+    border:none;
+}
+
+input[type=text]:focus {
+    background-color:#000;
+}    
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  color:#fff;
+}
+
+.autocomplete-items div:hover{
+    background-color:transparent;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #000; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+</style>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.mySlides {display:none;}
+</style>
+<div class="spinner-wrapper">
+  <div class="spinner"></div>
+  </div>
+<div class="holder">
+  <br>
+    <strong><h1 style="color:#fff;font-size:350%!important;cursor:pointer;" onclick="window.open('/','_top')">GETMP3</h1></strong>
+    <form autocomplete="off" id="form" method="post" action='' style="width:100%;">
+      <div class="autocomplete" style="width:100%;">
+        <input id="search" type="text" name="search" placeholder="Search for a song">        
+      </div>
+    </form>
+  <div class="w3-content w3-display-container">    
+  </div>
+  <br>
+  <strong><p style="color:#fff;text-align:center;" id="title">title</p></strong>
+  <br>
+  <div class="audio green-audio-player">
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+    <div class="play-pause-btn">  
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="24" viewBox="0 0 18 24">
+        <path fill="#566574" fill-rule="evenodd" d="M18 12L0 24V0" class="play-pause-icon" id="playPause"/>
+      </svg>
+    </div>
+
+    <div class="controls">
+      <span class="current-time">0:00</span>
+      <div class="slider" data-direction="horizontal">
+        <div class="progress">
+          <div class="pin" id="progress-pin" data-method="rewind"></div>
+        </div>
+      </div>
+      <span class="total-time">0:00</span>
+    </div>
+
+    <div class="volume">
+      <div class="volume-btn">        
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 29.978 29.978">
+	<path d="M25.462,19.105v6.848H4.515v-6.848H0.489v8.861c0,1.111,0.9,2.012,2.016,2.012h24.967c1.115,0,2.016-0.9,2.016-2.012
+		v-8.861H25.462z"/ fill="#566574">
+	<path fill="#566574" d="M14.62,18.426l-5.764-6.965c0,0-0.877-0.828,0.074-0.828s3.248,0,3.248,0s0-0.557,0-1.416c0-2.449,0-6.906,0-8.723
+		c0,0-0.129-0.494,0.615-0.494c0.75,0,4.035,0,4.572,0c0.536,0,0.524,0.416,0.524,0.416c0,1.762,0,6.373,0,8.742
+		c0,0.768,0,1.266,0,1.266s1.842,0,2.998,0c1.154,0,0.285,0.867,0.285,0.867s-4.904,6.51-5.588,7.193
+		C15.092,18.979,14.62,18.426,14.62,18.426z"/>
+</svg>        
+      </div>
+    </div>    
+    <audio crossorigin ></audio>
+  </div>
+  <div class="container">
+    <a href="" class="button"><i class="fa"></i></a>
+  </div>  
+  <div id="dwn"></div>
+  <strong><p style="color:lime;" id="title">Click on either arrows to browse through the different songs</p></strong>
+</div>
+<div id="youtube-player"></div>
+<script>
+  if(!sessionStorage.getItem('id')){
+    window.open('/','_top');
+  }
+var s1 = '<img class="mySlides" height="300" width="300" src="';
+var s2 = '" data-title="';
+var s3 = '" data-down="';
+var s4 = '">';
+var s = `
+<button class="w3-button w3-black w3-display-left" id="left" onclick="plusDivs(-1)" style="background-color:rgba(255,255,255,0.7)!important;">&#10094;</button>
+<button class="w3-button w3-black w3-display-right" id="right" onclick="plusDivs(1)" style="background-color:rgba(255,255,255,0.7)!important;">&#10095;</button>
+`;
+var id = sessionStorage.getItem('id').split('<!--!>');
+var cover = sessionStorage.getItem('cover').split('<!--!>');
+var titles = sessionStorage.getItem('titles').split('<!--!>');
+var i;
+var slideshow = document.getElementsByClassName('w3-display-container')[0];
+var f = '';
+for (i=0;i<id.length;i++){
+  f += s1+cover[i]+s2+titles[i]+s3+id[i]+s4;
+}
+console.log(f)
+slideshow.innerHTML += f+s;
+</script>
+<script>
+if(1){
+function onYouTubeIframeAPIReady() {
+    var r = new YT.Player("youtube-player", {
+        height: "0",
+        width: "0",
+        videoId: document.getElementById('dwn').getAttribute('data-vid'),
+        events: {
+            onReady: function () {
+              setTimeout(function(){document.getElementsByClassName('spinner-wrapper')[0].style.display = 'none';document.getElementsByClassName('spinner')[0].style.display = 'none';},5)
+                function changevid (id){
+                r.stopVideo();
+                r.cueVideoById({'videoId' : id});}
+                document.getElementById('right').onclick = function(){plusDivs(1)};
+                document.getElementById('left').onclick = function(){plusDivs(-1)};
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length}
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+  if (slideIndex != 1){
+    document.getElementById('title').innerHTML = x[slideIndex-1].getAttribute('data-title')+'...'}
+  else{document.getElementById('title').innerHTML = x[slideIndex-1].getAttribute('data-title')}
+  document.getElementById('dwn').setAttribute('data-src','https://mp3snow.com/'+x[slideIndex-1].getAttribute('data-down'))
+  changevid(x[slideIndex-1].getAttribute('data-down'))
+}
+var kl;
+var l = document.getElementsByClassName('mySlides')
+for (kl=0;kl<l.length;kl++){
+    if (l[kl].style.display == 'none'){
+      continue;
+    }
+    document.getElementById('title').innerHTML = l[kl].getAttribute('data-title')
+}
+var audioPlayer = document.querySelector('.green-audio-player');
+var playPause = audioPlayer.querySelector('#playPause');
+var playpauseBtn = audioPlayer.querySelector('.play-pause-btn');
+var loading = audioPlayer.querySelector('.loading');
+var progress = audioPlayer.querySelector('.progress');
+var sliders = audioPlayer.querySelectorAll('.slider');
+var volumeBtn = audioPlayer.querySelector('.volume-btn');
+var player = audioPlayer.querySelector('audio');
+var currentTime = audioPlayer.querySelector('.current-time');
+var totalTime = audioPlayer.querySelector('.total-time');
+var speaker = audioPlayer.querySelector('#speaker');
+
+var draggableClasses = ['pin'];
+var currentlyDragged = null;
+
+window.addEventListener('mousedown', function(event) {
+  
+  if(!isDraggable(event.target)) return false;
+  
+  currentlyDragged = event.target;
+  let handleMethod = currentlyDragged.dataset.method;
+  
+  this.addEventListener('mousemove', window[handleMethod], false);
+
+  window.addEventListener('mouseup', () => {
+    currentlyDragged = false;
+    window.removeEventListener('mousemove', window[handleMethod], false);
+  }, false);  
+});
+
+playpauseBtn.addEventListener('click', togglePlay);
+setInterval(updateProgress,5);
+setInterval(function (){totalTime.textContent = formatTime(r.getDuration())},1);
+makePlay();
+player.addEventListener('ended', function(){
+  playPause.attributes.d.value = "M18 12L0 24V0";
+  player.currentTime = 0;
+});
+
+volumeBtn.addEventListener('click', () => {
+  window.open(document.getElementById('dwn').getAttribute('data-src'),'_blank');
+})
+
+sliders.forEach(slider => {  
+  let pin = slider.querySelector('.pin');
+  slider.onclick = function(){window[pin.dataset.method];}
+});
+
+function isDraggable(el) {
+  let canDrag = false;
+  let classes = Array.from(el.classList);
+  draggableClasses.forEach(draggable => {
+    if(classes.indexOf(draggable) !== -1)
+      canDrag = true;
+  })
+  return canDrag;
+}
+
+function inRange(event) {
+  let rangeBox = getRangeBox(event);
+  let rect = rangeBox.getBoundingClientRect();
+  let direction = rangeBox.dataset.direction;
+  if(direction == 'horizontal') {
+    var min = rangeBox.offsetLeft;
+    var max = min + rangeBox.offsetWidth;   
+    if(event.clientX < min || event.clientX > max) return false;
+  } else {
+    var min = rect.top;
+    var max = min + rangeBox.offsetHeight; 
+    if(event.clientY < min || event.clientY > max) return false;  
+  }
+  return true;
+}
+
+function updateProgress() {
+  var current = r.getCurrentTime();
+  var percent = (current / r.getDuration()) * 100;
+  progress.style.width = percent + '%';
+  currentTime.innerText = formatTime(current);
+}
+
+function getRangeBox(event) {
+  let rangeBox = event.target;
+  let el = currentlyDragged;
+  if(event.type == 'click' && isDraggable(event.target)) {
+    rangeBox = event.target.parentElement.parentElement;
+  }
+  if(event.type == 'mousemove') {
+    rangeBox = el.parentElement.parentElement;
+  }
+  return rangeBox;
+}
+
+function getCoefficient(event) {
+  let slider = getRangeBox(event);
+  let rect = slider.getBoundingClientRect();
+  let K = 0;
+  if(slider.dataset.direction == 'horizontal') {
+    
+    let offsetX = event.clientX - slider.offsetLeft;
+    let width = slider.clientWidth;
+    K = offsetX / width;    
+    
+  } else if(slider.dataset.direction == 'vertical') {
+    
+    let height = slider.clientHeight;
+    var offsetY = event.clientY - rect.top;
+    K = 1 - offsetY / height;
+    
+  }
+  return K;
+}
+
+function rewind(event) {
+  if(1) {
+    alert(1)
+    r.seekTo(r.getDuration() * getCoefficient(event));
+  }
+}
+
+function formatTime(time) {
+  var min = Math.floor(time / 60);
+  var sec = Math.floor(time % 60);
+  return min + ':' + ((sec<10) ? ('0' + sec) : sec);
+}
+
+function togglePlay() {
+  if(r.getPlayerState() == 2 || r.getPlayerState() == 5) {
+    playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
+    r.playVideo();
+  } else if(r.getPlayerState() == 1){
+    playPause.attributes.d.value = "M18 12L0 24V0";
+    r.pauseVideo();
+  }  
+}
+
+function makePlay() {
+  playpauseBtn.style.display = 'block';
+  loading.style.display = 'none';
+}
+
+}
+        },
+    });  }}
+</script>
+<script>
+  function autocomplete(inp, arr) {
+    var currentFocus;
+    if (1) {
+        var a, b, i, val = inp.value;
+        closeAllLists();
+        currentFocus = -1;
+        a = document.createElement("DIV");
+        a.setAttribute("id", inp.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        inp.parentNode.appendChild(a);      
+        for (i = 0; i < arr.length; i++) {
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            b = document.createElement("DIV");
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            b.addEventListener("click", function(e) {
+                inp.value = this.getElementsByTagName("input")[0].value;            
+                closeAllLists();
+                document.getElementById('sub').click();
+            });
+            a.appendChild(b);
+          }
+        }
+    };
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(inp.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        addActive(x);
+        if (e.keyCode == 40) {
+          currentFocus++;        
+        } else if (e.keyCode == 38) { 
+          currentFocus--;
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          e.preventDefault();
+          if (currentFocus > -1) {
+            if (x) x[currentFocus].click();
+          }
+        }
+    });
+    function addActive(x) {
+      if (!x) return false;
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);    
+      x[currentFocus].classList.add("autocomplete-active");
+    }    
+    function removeActive(x) {
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+          x[i].parentNode.removeChild(x[i]);
+        }
+      }
+    }
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+  }
+  function close() {
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+          x[i].parentNode.removeChild(x[i]);
+      }
+  }
+  val = document.getElementById('search');
+  setInterval(() => {
+    if (val.value.length == 0){
+      close();
+    }
+  }, 5);
+  val.addEventListener('input',function(){
+          if (val.value.length > 2){
+              $.ajax({
+                  url:"https://suggestqueries.google.com/complete/search",
+                  dataType:"jsonp",
+                  data:{client:"firefox",ds:"yt",q:val.value},
+                  success:function(d){
+                      autocomplete(val,d[1]);
+                  }
+              });}
+  });
+  hex2ascii2 = function(hex) {
+    hex = hex.toString();
+    var ret = "";
+    var i = 0;
+    for (; i < hex.length && "00" !== hex.substr(i, 2); i = i + 2) {
+      ret = ret + String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    }
+  return ret;};
+  geturl = function(u){
+    return hex2ascii2(u.substr(10,22));
+  }
+  </script>
