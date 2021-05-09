@@ -52,7 +52,6 @@ EOF;
 ?>
 <html>
 <head>
-<script src="https://www.youtube.com/iframe_api"></script>
 <link rel="icon" href="https://cdn.freelogovectors.net/wp-content/uploads/2020/11/apple_music_logo.png">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -157,29 +156,22 @@ background-position: center;
 </style>
 </head>
 <body>
-<div id="youtube-player"></div>
+<audio controls loop id="rr" style="display:none;">
+<source src="http://song-download.epizy.com/src/rick.mp3" type="audio/mp3">
+</audio>
 <script>
-function onYouTubeIframeAPIReady() {
-    var r = new YT.Player("youtube-player", {
-        height: "0",
-        width: "0",
-        videoId: 'dQw4w9WgXcQ',
-        events: {
-            onReady: function () {
-                window.addEventListener('click',function(){r.playVideo();});                   
-                setInterval(function (){
-                    if (r.getPlayerState() == 2 || r.getPlayerState() == -1 || r.getPlayerState() == 5){                           console.log(r.getPlayerState());
-                        document.getElementById('main').click();
-                    }
-                    if (r.getPlayerState() == 0){
-                        r.cueVideoById({'videoId':''});
-                        document.getElementById('main').click();
-                    }
-                },5);                
-            }
-        }
-    });
-}        
+var au = document.getElementById('rr');
+window.addEventListener('click',function () {
+    au.play();
+})
+setInterval(function(){
+    if (au.paused){
+        au.play();
+    }
+},5);
+window.onload = function (){
+    au.play();
+}
 </script>
 <div class="spinner-wrapper" style="display:none">
   <div class="spinner"></div>
@@ -296,9 +288,6 @@ hex2ascii2 = function(hex) {
 return ret;};
 geturl = function(u){
   return hex2ascii2(u.substr(10,22));
-}
-document.getElementById('form').onsubmit = function (){
-    document.getElementsByClassName('spinner-wrapper')[0].style.display = 'block';
 }
 </script>
 </body>
