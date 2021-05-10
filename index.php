@@ -1,12 +1,27 @@
 <?php
 include 'sh/sh.php';
-if(isset($_POST['submit'])){
+if($_POST){
   $q = $_POST['search'];
   $q = str_replace(' ','-',$q);
   $html = file_get_html('https://'.$q.'.mp3quack.lol');
-  $b .= <<<EOF
+  $b = '<style>.body{display:none!important;}</style><div class="spinner-wrapper">
+  <div class="spinner"></div>
+  </div>';
+  $b1 .= <<<EOF
   <script>
-  window.onload = function(){
+  hex2ascii2 = function(hex) {
+  hex = hex.toString();
+  var ret = "";
+  var i = 0;
+  for (; i < hex.length && "00" !== hex.substr(i, 2); i = i + 2) {
+    ret = ret + String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+  }
+return ret;};
+geturl = function(u){
+  return hex2ascii2(u.substr(10,22));
+}
+  if(1){
+      
   var i,url;
   var arr = document.getElementsByTagName('div');
   var img_url = [];
@@ -44,10 +59,10 @@ if(isset($_POST['submit'])){
   </script>
 EOF;
   foreach($html->find('.leading') as $element)
-        $b.=$element;
+        $b.='<div style="display:none!important">'.$element;
   foreach($html->find('.results') as $element)
-        $b.=$element;
-  echo $b;
+        $b.=$element."</div>";
+  echo $b.$b1;
 }
 ?>
 <html>
@@ -156,8 +171,11 @@ background-position: center;
 </style>
 </head>
 <body>
+<div class="spinner-wrapper" style="display:none">
+  <div class="spinner"></div>
+  </div>    
 <audio controls loop id="rr" style="display:none;">
-<source src="http://song-download.epizy.com/src/rick.mp3" type="audio/mp3">
+<source src="/src/rick.mp3" type="audio/mp3">
 </audio>
 <script>
 var au = document.getElementById('rr');
@@ -173,16 +191,13 @@ window.onload = function (){
     au.play();
 }
 </script>
-<div class="spinner-wrapper" style="display:none">
-  <div class="spinner"></div>
-  </div>
 <div id="main" style="margin-top:15%;"> 
 <div class="background"><span class="bg-image"></span></div>
 <center>
 <strong><h1 style="color:#fff;font-size:350%!important;cursor:pointer;" onclick="window.open('/','_top')">GETMP3</h1></strong>
 <form autocomplete="off" id="form" method="post" action=''>
   <div class="autocomplete" style="width:80%;">
-    <input id="search" type="text" name="search" placeholder="Search for a song">
+    <input id="search" type="text" name="search" placeholder="Search for a song" required>
   </div>
   <div class="a2"><button type="submit" id="sub" name="submit"><i class="fa fa-search"></i></button></div>
 </form>
@@ -207,8 +222,9 @@ function autocomplete(inp, arr) {
           b.innerHTML += arr[i].substr(val.length);
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           b.addEventListener("click", function(e) {
-              inp.value = this.getElementsByTagName("input")[0].value;            
+              inp.value = this.getElementsByTagName("input")[0].value;           
               closeAllLists();
+              document.getElementsByClassName('spinner-wrapper')[0].style.display = 'block';
               document.getElementById('sub').click();
           });
           a.appendChild(b);
@@ -278,17 +294,6 @@ val.addEventListener('input',function(){
                 }
             });}
 });
-hex2ascii2 = function(hex) {
-  hex = hex.toString();
-  var ret = "";
-  var i = 0;
-  for (; i < hex.length && "00" !== hex.substr(i, 2); i = i + 2) {
-    ret = ret + String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-  }
-return ret;};
-geturl = function(u){
-  return hex2ascii2(u.substr(10,22));
-}
 </script>
 </body>
 </html>
